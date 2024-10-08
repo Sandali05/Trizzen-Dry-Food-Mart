@@ -34,8 +34,8 @@ const Login: React.FC = () => {
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative flex items-center justify-center min-h-screen shadow-xl">
         <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-4xl font-bold mb-4 pb-8 text-center text-primary">VitalEats</h2>
-          <h2 className="text-2xl font-bold mb-4">Welcome back chief!</h2>
+          <h2 className="text-4xl font-bold mb-4 pb-8 text-center text-primary">TrizzenOnline</h2>
+          <h2 className="text-2xl font-bold mb-4">Welcome back!</h2>
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
