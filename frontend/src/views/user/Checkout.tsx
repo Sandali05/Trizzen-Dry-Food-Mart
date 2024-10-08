@@ -29,6 +29,31 @@ const Order: React.FC = () => {
     const handlePlaceOrder = async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
+          // Validation checks
+          if (!name) {
+            alert("Please provide your name.");
+            return;
+        } else if (!/^[A-Za-z\s]+$/.test(name)) {
+            alert("Invalid Name: Name contains Only characters");
+            return;
+        }
+
+        if (!address) {
+            alert("Please provide a delivery address.");
+            return;
+        } else if (!/^\d+\s*,\s*[A-Za-z\s]+,\s*[A-Za-z\s]+$/.test(address)) {
+            alert("“Add the correct format of an address”");
+            return;
+        }
+
+        if (!mobile) {
+            alert("Please provide your mobile number.");
+            return;
+        } else if (!/^0\d{9}$/.test(mobile)) {
+            alert("Invalid Mobile Number");
+            return;
+        }
+
         // Retrieve user from local storage
         const token = localStorage.getItem('token') || '';
         const userId = localStorage.getItem('userId') || '';
@@ -138,7 +163,7 @@ const Order: React.FC = () => {
                                     type="text"
                                     value={address}
                                     onChange={(e) => setAddress(e.target.value)}
-                                    placeholder="123 Main St, Cityville, ST, 12345"
+                                    placeholder="123 ,Main St, Cityville, ST, 12345"
                                     className="border border-gray-300 rounded-lg px-3 py-2"
                                 />
                             </div>
@@ -148,7 +173,7 @@ const Order: React.FC = () => {
                                     type="text"
                                     value={mobile}
                                     onChange={(e) => setMobile(e.target.value)}
-                                    placeholder="123-456-7890"
+                                    placeholder="0#########"
                                     className="border border-gray-300 rounded-lg px-3 py-2"
                                 />
                             </div>

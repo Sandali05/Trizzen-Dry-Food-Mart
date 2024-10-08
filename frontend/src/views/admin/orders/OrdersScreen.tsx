@@ -42,6 +42,15 @@ const OrdersScreen = () => {
     assignedDriver: "",
   });
 
+   // Error states 01
+   const [errors, setErrors] = useState({
+    name: "",
+    mobile: "",
+    address: "",
+  
+  });
+
+
   // Filter orders based on search term
   const filteredOrders = useMemo(() => {
     return orders.filter(
@@ -70,12 +79,14 @@ const OrdersScreen = () => {
       status: "",
       assignedDriver: "",
     });
+    setErrors({ name: "", mobile: "", address:"", });//02 
     setOpen(true);
   };
 
   const handleUpdateOpen = (order: Order) => {
     setIsUpdate(true);
     setCurrentOrder(order);
+    setErrors({ name: "", mobile: "",address:""});//03
     setOpen(true);
   };
 
@@ -86,7 +97,40 @@ const OrdersScreen = () => {
     setCurrentOrder({ ...currentOrder, [name]: value });
   };
 
+  const validateFields = () => {
+    let valid = true;
+    const newErrors = { name: "", mobile: "", vehicleId: "", address:"" };//04
+
+    // Validate name
+    if (!/^[A-Za-z\s]+$/.test(currentOrder.name)) {
+      newErrors.name = "Invalid Name: Name contains Only characters";
+      valid = false;
+    }
+    //address
+    if (!/^\d+\s*,\s*[A-Za-z\s]+,\s*[A-Za-z\s]+$/.test(currentOrder.address)) {
+      newErrors.address = "add correct format of a adrress";
+      valid = false;
+    }
+
+    // Validate mobile
+    if (!/^0\d{9}$/.test(currentOrder.mobile)) {
+      newErrors.mobile = "Invalid Mobile Number";
+      valid = false;
+    }
+
+    //05
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+
   const handleSave = async () => {
+
+    if (!validateFields()) {
+      return; // If validation fails, stop the save process 06
+    }
+
     if (isUpdate) {
       if (await updateOrder(currentOrder)) {
         alert("Order updated successfully");
@@ -111,7 +155,7 @@ const OrdersScreen = () => {
   return (
     <>
       <Container maxWidth="lg" sx={{ marginTop: 5,  
-                backgroundImage: `url('https://i.ytimg.com/vi/6h6b4LPq1Vw/maxresdefault.jpg')`, // Replace with actual image path
+                backgroundImage: `url('https://i.ytimg.com/vi/6h6b4LPq1Vw/maxresdefault.jpg')`, // background image
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 minHeight: "100vh", // Ensures the background covers the whole viewport
@@ -259,6 +303,8 @@ const OrdersScreen = () => {
               name="name"
               value={currentOrder.name}
               onChange={handleChange}
+              error={Boolean(errors.name)}//7
+              helperText={errors.name}//7
               fullWidth
               margin="normal"
             />
@@ -267,6 +313,8 @@ const OrdersScreen = () => {
               name="address"
               value={currentOrder.address}
               onChange={handleChange}
+              error={Boolean(errors.address)}//7
+              helperText={errors.address}//7
               fullWidth
               margin="normal"
             />
@@ -275,6 +323,8 @@ const OrdersScreen = () => {
               name="mobile"
               value={currentOrder.mobile}
               onChange={handleChange}
+              error={Boolean(errors.mobile)}//7
+              helperText={errors.mobile}//7
               fullWidth
               margin="normal"
             />
