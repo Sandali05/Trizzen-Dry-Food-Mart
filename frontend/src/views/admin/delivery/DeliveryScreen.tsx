@@ -364,9 +364,9 @@ const DeliveryScreen = () => {
                 value={currentDelivery.orderStatus}
                 onChange={handleSelectChange} // Use the new handleSelectChange
               >
-                <MenuItem value="Pending">Pending</MenuItem>
+                <MenuItem value="Pending">Available</MenuItem>
                 <MenuItem value="Completed">Completed</MenuItem>
-                <MenuItem value="In Transit">In Transit</MenuItem>
+                <MenuItem value="In Transit">Out To Delivery</MenuItem>
                 {/* Add more statuses as needed */}
               </Select>
             </FormControl>
