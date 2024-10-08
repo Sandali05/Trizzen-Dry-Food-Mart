@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import gif from './img/sale-gif.gif'
+
 
 
 interface NewsfeedItem {
