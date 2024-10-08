@@ -42,6 +42,17 @@ const DeliveryScreen = () => {
     // assignedOrders: [] as string[],
   });
 
+   // Error states
+   const [errors, setErrors] = useState({
+    name: "",
+    mobile: "",
+    vehicleId: "",
+    nic: "",
+    email: "",
+    address: ""
+  });
+
+
   const filteredDeliveries = useMemo(() => {
     return deliveries.filter(
       (delivery) =>
@@ -71,6 +82,7 @@ const DeliveryScreen = () => {
       address: "",
       // assignedOrders: [] as string[],
     });
+    setErrors({ name: "", mobile: "", vehicleId: "" , address:"", nic: "",email: ""});
     setOpen(true);
   };
 
@@ -89,6 +101,7 @@ const DeliveryScreen = () => {
       address: delivery.address || "",
       // assignedOrders: delivery.assignedOrders || [],
     });
+    setErrors({ name: "", mobile: "", vehicleId: "" , address:"", nic: "",email: ""});
     setOpen(true);
   };
 
@@ -103,6 +116,62 @@ const DeliveryScreen = () => {
     const { name, value } = e.target;
     setCurrentDelivery({ ...currentDelivery, [name]: value });
   };
+
+  const validateFields = () => {
+    let valid = true;
+    const newErrors = { name: "", mobile: "", vehicleId: "" , address:"", nic: "",email: "" };
+
+    // Validate name
+    if (!/^[A-Za-z\s]+$/.test(currentDelivery.name)) {
+      newErrors.name = "Invalid Name, Please Enter Again!";
+      valid = false;
+    }
+    //address
+    if (!/^\d+\s*,\s*[A-Za-z\s]+,\s*[A-Za-z\s]+$/.test(currentDelivery.address)) {
+      newErrors.address = "Add the correct format of an address";
+      valid = false;
+    }
+
+    // Validate mobile
+    if (!/^0\d{9}$/.test(currentDelivery.mobile)) {
+      newErrors.mobile = "Mobile must contain 10 digits and start with '0'.";
+      valid = false;
+    }
+
+    // Validate vehicleId
+    if (!/^[A-Za-z]{2}\d{4}$/.test(currentDelivery.vehicleId)) {
+      newErrors.vehicleId =
+        "Vehicle ID must start with two letters followed by four numbers.";
+      valid = false;
+    }
+
+    if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(currentDelivery.email)) {
+      newErrors.vehicleId =
+        "Invalid Email,Please Enter Again!";
+      valid = false;
+    }
+
+    if (!/^(\d{12}|\d{9}[vV])$/.test(currentDelivery.nic)) {
+      newErrors.vehicleId =
+        "Invalid NIC, Please Enter Again!";
+      valid = false;
+    }
+
+    // Check for unique name
+    const isNameUnique = !deliveries.some(
+      (delivery) =>
+        delivery.name.toLowerCase() === currentDelivery.name.toLowerCase() &&
+        delivery._id !== currentDelivery._id // Exclude current delivery if updating
+    );
+    if (!isNameUnique) {
+      newErrors.name = "Delivery name must be unique.";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
 
   const handleSave = async () => {
     const { _id, ...currentDeliveryWithoutId } = currentDelivery;
@@ -299,6 +368,8 @@ const DeliveryScreen = () => {
               name="name"
               value={currentDelivery.name}
               onChange={handleChange}
+              error={Boolean(errors.name)}
+              helperText={errors.name}
               fullWidth
               margin="normal"
             />
@@ -307,6 +378,8 @@ const DeliveryScreen = () => {
               name="mobile"
               value={currentDelivery.mobile}
               onChange={handleChange}
+              error={Boolean(errors.mobile)}
+              helperText={errors.mobile}
               fullWidth
               margin="normal"
             />
@@ -315,6 +388,8 @@ const DeliveryScreen = () => {
               name="vehicleId"
               value={currentDelivery.vehicleId}
               onChange={handleChange}
+              error={Boolean(errors.vehicleId)}
+              helperText={errors.vehicleId}
               fullWidth
               margin="normal"
             />
@@ -323,6 +398,8 @@ const DeliveryScreen = () => {
               name="nic"
               value={currentDelivery.nic}
               onChange={handleChange}
+              error={Boolean(errors.nic)}
+              helperText={errors.nic}
               fullWidth
               margin="normal"
             />
@@ -331,6 +408,8 @@ const DeliveryScreen = () => {
               name="email"
               value={currentDelivery.email}
               onChange={handleChange}
+              error={Boolean(errors.email)}
+              helperText={errors.email}
               fullWidth
               margin="normal"
             />
@@ -339,6 +418,8 @@ const DeliveryScreen = () => {
               name="address"
               value={currentDelivery.address}
               onChange={handleChange}
+              error={Boolean(errors.address)}
+              helperText={errors.address}
               fullWidth
               margin="normal"
             />
