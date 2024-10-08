@@ -127,9 +127,9 @@ const OrdersScreen = () => {
             boxShadow: "none",
           }}
         >
-          <Button variant="contained" color="primary" onClick={handleOpen}>
-            Add Order
-          </Button>
+         <Typography  color="white"  sx={{ color: "#000000", fontWeight: "bold", marginBottom: 5 }}>
+          All Order Records
+        </Typography>
           <TextField
             label="Search orders"
             variant="outlined"
