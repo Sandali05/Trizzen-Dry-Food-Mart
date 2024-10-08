@@ -52,7 +52,7 @@ const SupplierScreen = () => {
   });
   const [items, setItems] = useState<Item[]>([]); // State to hold items
 
-  // Error states
+  // Error states (error)
   const [errors, setErrors] = useState({
     name: "",
     mobile: "",
