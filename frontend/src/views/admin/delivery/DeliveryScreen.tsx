@@ -343,7 +343,7 @@ const DeliveryScreen = () => {
                   <img
                     src={`/drivers/${delivery.image}`}
                     // alt={delivery.name}
-                    style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                    style={{ width: "2o0px", height: "100px", borderRadius: "50%" }}
                   />
                 </TableCell>
               </TableRow>
