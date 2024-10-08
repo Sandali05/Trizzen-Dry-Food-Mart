@@ -127,7 +127,7 @@ const OrdersScreen = () => {
             boxShadow: "none",
           }}
         >
-         <Typography variant="h4" color="white"  sx={{ color: "#000000", fontWeight: "bold", marginBottom: 5, }}>
+         <Typography variant="h5" color="white"  sx={{ color: "#000000", fontWeight: "bold", marginBottom: 5, }}>
           All Order Records
         </Typography>
           <TextField
