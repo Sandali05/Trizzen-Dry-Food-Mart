@@ -61,7 +61,7 @@ exports.deleteNewsfeed = async (req, res) => {
             return res.status(404).json({ message: 'Newsfeed item not found' });
         }
         
-        await newsfeed.remove();
+        await newsfeed.deleteOne();
         res.status(200).json({ message: 'Newsfeed item deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Error deleting newsfeed item', error });
