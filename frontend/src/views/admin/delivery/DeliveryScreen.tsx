@@ -146,13 +146,13 @@ const DeliveryScreen = () => {
     }
 
     if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(currentDelivery.email)) {
-      newErrors.vehicleId =
+      newErrors.email =
         "Invalid Email,Please Enter Again!";
       valid = false;
     }
 
     if (!/^(\d{12}|\d{9}[vV])$/.test(currentDelivery.nic)) {
-      newErrors.vehicleId =
+      newErrors.nic =
         "Invalid NIC, Please Enter Again!";
       valid = false;
     }
