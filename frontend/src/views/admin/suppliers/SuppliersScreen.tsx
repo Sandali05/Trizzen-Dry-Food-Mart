@@ -52,6 +52,14 @@ const SupplierScreen = () => {
   });
   const [items, setItems] = useState<Item[]>([]); // State to hold items
 
+  // Error states
+  const [errors, setErrors] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+    address: "",
+  });
+
   // Fetch items from API
   useEffect(() => {
     const fetchItems = async () => {
@@ -89,12 +97,14 @@ const SupplierScreen = () => {
       email: "",
       company: "",
     });
+setErrors({ name: "", mobile: "", email: "", address: "" });
     setOpen(true);
   };
 
   const handleUpdateOpen = (supplier: Supplier) => {
     setIsUpdate(true);
     setCurrentSupplier(supplier);
+    setErrors({ name: "", mobile: "", email: "", address: "" });
     setOpen(true);
   };
 
@@ -113,7 +123,43 @@ const SupplierScreen = () => {
     setCurrentSupplier({ ...currentSupplier, [name]: value as string });
   };
 
+  const validateFields = () => {
+    let valid = true;
+    const newErrors = { name: "", mobile: "", email: "", address: "" };
+
+    // Validate name
+    if (!/^[A-Za-z\s]+$/.test(currentSupplier.name)) {
+      newErrors.name = "Name must contain only alphabetic letters and put space between words";
+      valid = false;
+    }
+
+    // Address validation
+    if (!/^\d+\s*,\s*[A-Za-z\s]+,\s*[A-Za-z\s]+$/.test(currentSupplier.address)) {
+      newErrors.address = "Add the correct format of an address";
+      valid = false;
+    }
+
+    // Validate mobile
+    if (!/^0\d{9}$/.test(currentSupplier.mobile)) {
+      newErrors.mobile = "Mobile must contain 10 digits and start with '0'.";
+      valid = false;
+    }
+
+    // Email validation
+    if (!/^[a-zA-Z][\w.-]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/.test(currentSupplier.email)) {
+      newErrors.email = "E-mail should start with a letter and contain '@'";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
   const handleSave = async () => {
+    if (!validateFields()) {
+      return; // If validation fails, stop the save process
+    }
+
     if (isUpdate) {
       await updateSupplier(currentSupplier).then((success) => {
         if (success) {
@@ -288,6 +334,8 @@ const SupplierScreen = () => {
               name="name"
               value={currentSupplier.name}
               onChange={handleChange}
+              error={Boolean(errors.name)}
+              helperText={errors.name}
               fullWidth
               margin="normal"
             />
@@ -296,6 +344,8 @@ const SupplierScreen = () => {
               name="address"
               value={currentSupplier.address}
               onChange={handleChange}
+              error={Boolean(errors.address)}
+              helperText={errors.address}
               fullWidth
               margin="normal"
             />
@@ -304,6 +354,8 @@ const SupplierScreen = () => {
               name="mobile"
               value={currentSupplier.mobile}
               onChange={handleChange}
+              error={Boolean(errors.mobile)}
+              helperText={errors.mobile}
               fullWidth
               margin="normal"
             />
@@ -326,6 +378,8 @@ const SupplierScreen = () => {
               name="email"
               value={currentSupplier.email}
               onChange={handleChange}
+              error={Boolean(errors.email)}
+              helperText={errors.email}
               fullWidth
               margin="normal"
             />
