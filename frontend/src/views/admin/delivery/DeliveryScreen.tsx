@@ -147,7 +147,7 @@ const DeliveryScreen = () => {
           }}
         >
           <Button variant="contained" color="primary" onClick={handleOpen}>
-            Add a Rider
+            Add Delivery Drivers
           </Button>
           <TextField
             label="Search deliveries"
