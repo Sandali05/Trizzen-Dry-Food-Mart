@@ -166,7 +166,7 @@ const SupplierScreen = () => {
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ width: "300px" }}
+            sx={{ width: "500px" }}
           />
           <Button variant="contained" color="inherit" onClick={handlePrint}>
             Print Report
