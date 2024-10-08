@@ -174,6 +174,10 @@ const DeliveryScreen = () => {
 
 
   const handleSave = async () => {
+
+    if (!validateFields()) {
+      return; // If validation fails, stop the save process
+    }
     const { _id, ...currentDeliveryWithoutId } = currentDelivery;
     if (isUpdate) {
       if (await updateDelivery({ _id, ...currentDeliveryWithoutId })) {
