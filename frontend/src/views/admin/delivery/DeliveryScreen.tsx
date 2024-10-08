@@ -357,7 +357,7 @@ const DeliveryScreen = () => {
               </Select>
             </FormControl>
             <FormControl fullWidth margin="normal">
-              <InputLabel id="order-status-label">Order Status</InputLabel>
+              <InputLabel id="order-status-label">Current Status</InputLabel>
               <Select
                 labelId="order-status-label"
                 name="orderStatus"
