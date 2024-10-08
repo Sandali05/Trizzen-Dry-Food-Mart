@@ -180,7 +180,7 @@ const SupplierScreen = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Name 101</TableCell>
+                <TableCell>Name</TableCell>
                 <TableCell>Address</TableCell>
                 <TableCell>Mobile</TableCell>
                 <TableCell>Item ID</TableCell>
