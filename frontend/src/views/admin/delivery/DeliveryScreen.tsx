@@ -250,7 +250,7 @@ const DeliveryScreen = () => {
               <TableCell>NIC</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Category</TableCell>
-              <TableCell>Order Status</TableCell>
+              <TableCell>Current Status</TableCell>
               <TableCell>Address</TableCell>
               <TableCell>Image</TableCell>
             </TableRow>
