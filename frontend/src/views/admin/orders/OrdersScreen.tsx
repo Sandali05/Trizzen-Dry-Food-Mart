@@ -127,15 +127,15 @@ const OrdersScreen = () => {
             boxShadow: "none",
           }}
         >
-          <Button variant="contained" color="primary" onClick={handleOpen}>
-            Add Order
-          </Button>
+         <Typography variant="h5" color="white"  sx={{ color: "#000000", fontWeight: "bold", marginBottom: 5, }}>
+          All Order Records
+        </Typography>
           <TextField
             label="Search orders"
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ width: "300px" }}
+            sx={{ width: "500px" }}
           />
           <Button variant="contained" color="inherit" onClick={handlePrint}>
             Print Report
