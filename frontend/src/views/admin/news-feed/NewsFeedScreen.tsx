@@ -28,6 +28,7 @@ const NewsFeedScreen = () => {
     itemId: "",
     discount: "",
     description: "",
+    image: "",
   });
 
   // Filter news feeds based on search term
@@ -45,7 +46,7 @@ const NewsFeedScreen = () => {
     setCurrentNewsFeed({
       _id: "",
       itemId: "",
-      // photo: "",
+      image: "",
       discount: "",
       description: "",
     });
@@ -131,6 +132,7 @@ const NewsFeedScreen = () => {
                 <TableCell>Item</TableCell>
                 <TableCell>Discount</TableCell>
                 <TableCell>Description</TableCell>
+                <TableCell>Image</TableCell>
                 <TableCell className="no-print">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -140,6 +142,11 @@ const NewsFeedScreen = () => {
                   <TableCell>{newsFeed.itemId}</TableCell>
                   <TableCell>{newsFeed.discount}</TableCell>
                   <TableCell>{newsFeed.description}</TableCell>
+                  <TableCell><img 
+                  src={`/images/${newsFeed.image}`} 
+                  alt={newsFeed.image} 
+                  className="w-auto h-6 mx-auto object-cover" 
+                /></TableCell>
                   <TableCell
                     className="no-print"
                     sx={{
@@ -190,6 +197,7 @@ const NewsFeedScreen = () => {
               <TableCell>Item</TableCell>
               <TableCell>Discount</TableCell>
               <TableCell>Description</TableCell>
+              <TableCell>Image</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -198,6 +206,11 @@ const NewsFeedScreen = () => {
                 <TableCell>{newsFeed.itemId}</TableCell>
                 <TableCell>{newsFeed.discount}</TableCell>
                 <TableCell>{newsFeed.description}</TableCell>
+                <TableCell><img 
+                  src={`/images/${newsFeed.image}`} 
+                  alt={newsFeed.image} 
+                  className="w-auto h-6 mx-auto object-cover" 
+                /></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -247,6 +260,16 @@ const NewsFeedScreen = () => {
               label="Description"
               name="description"
               value={currentNewsFeed.description}
+              onChange={handleChange}
+              multiline
+              rows={5}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Image"
+              name="image"
+              value={currentNewsFeed.image}
               onChange={handleChange}
               multiline
               rows={5}

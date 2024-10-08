@@ -3,8 +3,8 @@ const Newsfeed = require('../Models/newsFeed.model'); // Adjust the path as nece
 // Add a newsfeed item
 exports.addNewsfeed = async (req, res) => {
     try {
-        const { description, discount, itemId } = req.body;
-        const newsfeed = new Newsfeed({ description, discount, itemId });
+        const { description, discount, itemId, image } = req.body;
+        const newsfeed = new Newsfeed({ description, discount, itemId, image });
         await newsfeed.save();
         res.status(201).json({
             message: 'Newsfeed item added successfully',
@@ -32,7 +32,7 @@ exports.getAllNewsfeeds = async (req, res) => {
 exports.updateNewsfeed = async (req, res) => {
     try {
         const { newsfeedId } = req.params;
-        const { description, discount, itemId } = req.body;
+        const { description, discount, itemId ,image } = req.body;
         
         const newsfeed = await Newsfeed.findById(newsfeedId);
         if (!newsfeed) {
@@ -42,6 +42,7 @@ exports.updateNewsfeed = async (req, res) => {
         newsfeed.description = description || newsfeed.description;
         newsfeed.discount = discount || newsfeed.discount;
         newsfeed.itemId = itemId || newsfeed.itemId;
+        newsfeed.image = image || newsfeed.image;
 
         await newsfeed.save();
         res.status(200).json({ message: 'Newsfeed item updated successfully', newsfeed });

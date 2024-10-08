@@ -9,6 +9,7 @@ interface NewsfeedItem {
   itemId: string;
   createdAt: string;
   updatedAt: string;
+  image: string;
 }
 
 const News: React.FC = () => {
@@ -46,8 +47,8 @@ const News: React.FC = () => {
           <div key={newsfeed._id} className="bg-white rounded-lg shadow-lg overflow-hidden transform transition hover:scale-105 duration-300">
             
             {/* Display a random GIF or a relevant static image for each news */}
-            <img
-              src={gif}
+            <img 
+                  src={`/images/${newsfeed.image}`} 
               alt="News GIF"
               className="w-full h-40 object-cover"
             />

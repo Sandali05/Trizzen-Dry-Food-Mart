@@ -8,6 +8,7 @@ export interface NewsFeed {
   // photo: string;
   discount: string;
   description: string;
+  image: string;
 }
 
 export interface NewsFeedContextType {

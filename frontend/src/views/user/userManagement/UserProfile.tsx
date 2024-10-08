@@ -71,6 +71,7 @@ const Profile: React.FC = () => {
           },
         });
         setFeedbacks(feedbackResponse.data || []);
+        console.log(feedbackResponse) ;
       } catch (err: any) {
         console.error(err.response?.data.message || 'Failed to fetch user feedback');
         setFeedbacks([]);
