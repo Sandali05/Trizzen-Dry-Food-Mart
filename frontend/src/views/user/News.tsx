@@ -63,15 +63,15 @@ const News: React.FC = () => {
 
   const handleRedirect = (index: number) => {
     const paths = [
-      '', // No redirect for the first three posts
-      '', // Second post
-      '', // Third post
+      'http://localhost:5173/', // 1st post
+      '', // 2nd post
+      'http://localhost:5173/', // 3rd post
       'http://localhost:5173/item/67042cf9994810fbc9611170', // 4th post
       'http://localhost:5173/item/67042dbd994810fbc9611184', // 5th post
       'http://localhost:5173/item/67042eac994810fbc9611192', // 6th post
     ];
     
-    if (index >= 3) {
+    if (paths[index]) {
       window.location.href = paths[index];
     }
   };
@@ -105,9 +105,13 @@ const News: React.FC = () => {
             
             <div className="p-6 text-center">
               <h3 className="text-2xl font-semibold text-gray-800 mb-4">{newsfeed.description}</h3>
-              <p className="text-black text-3xl font-bold mb-4">
-                Discount: <span className="font-bold text-green-600">{newsfeed.discount}%</span>
-              </p>
+              
+              {/* Only display discount for posts other than the second post */}
+              {index !== 1 && (
+                <p className="text-black text-3xl font-bold mb-4">
+                  Discount: <span className="font-bold text-green-600">{newsfeed.discount}%</span>
+                </p>
+              )}
               
               {/* Display the start date for the first newsfeed item */}
               {index === 0 && (
@@ -116,10 +120,17 @@ const News: React.FC = () => {
                 </p>
               )}
 
-              {/* Display countdown for the other newsfeed items */}
-              {index > 0 && timeRemaining[index] && (
-                <p className={`mt-4 text-2xl font-bold ${index === 2 ? 'text-red-500' : 'text-black'}`}>
-                  {timeRemaining[index]}
+              {/* Display countdown for the second newsfeed item */}
+              {index === 1 && timeRemaining[index] && (
+                <p className="mt-4 text-2xl font-bold text-black">
+                  Up coming: {timeRemaining[index]}
+                </p>
+              )}
+
+              {/* Display countdown for the third newsfeed item with red color */}
+              {index === 2 && timeRemaining[index] && (
+                <p className="mt-4 text-2xl font-bold text-red-500">
+                  End in: {timeRemaining[index]}
                 </p>
               )}
             </div>
