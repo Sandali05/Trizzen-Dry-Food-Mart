@@ -42,7 +42,7 @@ const Order: React.FC = () => {
             alert("Please provide a delivery address.");
             return;
         } else if (!/^\d+\s*,\s*[A-Za-z\s]+,\s*[A-Za-z\s]+$/.test(address)) {
-            alert("“Add the correct format of an address”");
+            alert("Add the correct format of an address");
             return;
         }
 
