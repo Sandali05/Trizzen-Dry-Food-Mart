@@ -18,8 +18,7 @@ import { useNewsFeed } from "../../../hooks/useNewsFeed";
 import { NewsFeed } from "../../../context/newsFeedContext";
 
 const NewsFeedScreen = () => {
-  const { newsFeeds, addNewsFeed, updateNewsFeed, deleteNewsFeed } =
-    useNewsFeed();
+  const { newsFeeds, addNewsFeed, updateNewsFeed, deleteNewsFeed } = useNewsFeed();
   const [open, setOpen] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,6 +29,15 @@ const NewsFeedScreen = () => {
     description: "",
     image: "",
   });
+
+  // Error messages
+  const [errorMessages, setErrorMessages] = useState({
+    itemId: "",
+    discount: "",
+    description: "",
+  });
+  const [showErrorBox, setShowErrorBox] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Filter news feeds based on search term
   const filteredNewsFeeds = useMemo(() => {
@@ -51,12 +59,18 @@ const NewsFeedScreen = () => {
       description: "",
     });
     setOpen(true);
+    setErrorMessages({ itemId: "", discount: "", description: "" }); // Reset error messages
+    setShowErrorBox(false); // Hide error box
+    setErrorMessage(""); // Clear error message
   };
 
   const handleUpdateOpen = (newsFeed: NewsFeed) => {
     setIsUpdate(true);
     setCurrentNewsFeed(newsFeed);
     setOpen(true);
+    setErrorMessages({ itemId: "", discount: "", description: "" }); // Reset error messages
+    setShowErrorBox(false); // Hide error box
+    setErrorMessage(""); // Clear error message
   };
 
   const handleClose = () => setOpen(false);
@@ -67,6 +81,53 @@ const NewsFeedScreen = () => {
   };
 
   const handleSave = async () => {
+    const discountValue = parseFloat(currentNewsFeed.discount);
+    const descriptionValue = currentNewsFeed.description;
+    const itemIdValue = currentNewsFeed.itemId;
+
+    // Reset error messages
+    setErrorMessages({ itemId: "", discount: "", description: "" });
+    setShowErrorBox(false); // Hide error box
+    setErrorMessage(""); // Clear error message
+
+    // Check if all fields are filled out
+    if (!itemIdValue || !discountValue || !descriptionValue || !currentNewsFeed.image) {
+      setShowErrorBox(true);
+      setErrorMessage("All fields must be filled out.");
+      return;
+    }
+
+    // Validate Item ID uniqueness
+    const isDuplicate = newsFeeds.some(
+      (newsFeed) => newsFeed.itemId === itemIdValue && newsFeed._id !== currentNewsFeed._id
+    );
+
+    if (isDuplicate) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        itemId: "Item ID must be unique.",
+      }));
+      return;
+    }
+
+    // Validate discount
+    if (isNaN(discountValue) || discountValue < 0.1 || discountValue > 100) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        discount: "Discount must be a number between 0.1 and 100.",
+      }));
+      return;
+    }
+
+    // Validate description
+    if (descriptionValue.length > 50) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        description: "Description cannot exceed 50 characters.",
+      }));
+      return;
+    }
+
     if (isUpdate) {
       if (await updateNewsFeed(currentNewsFeed)) {
         alert("News Feed updated successfully");
@@ -90,13 +151,18 @@ const NewsFeedScreen = () => {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ marginTop: 5,  
-                backgroundImage: `url('https://cbx-prod.b-cdn.net/COLOURBOX35608273.jpg?width=800&height=800&quality=70')`, // Replace with actual image path
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                minHeight: "100vh", // Ensures the background covers the whole viewport
-                padding: "20px", // Add padding around the content
-      }} className="no-print">
+      <Container
+        maxWidth="lg"
+        sx={{
+          marginTop: 5,
+          backgroundImage: `url('https://cbx-prod.b-cdn.net/COLOURBOX35608273.jpg?width=800&height=800&quality=70')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+          padding: "20px",
+        }}
+        className="no-print"
+      >
         <Paper
           sx={{
             display: "flex",
@@ -121,11 +187,14 @@ const NewsFeedScreen = () => {
             Print Report
           </Button>
         </Paper>
-        <TableContainer component={Paper} sx={{ 
-            marginBottom: 5, 
-            backgroundColor: "rgba(255, 255, 255, 0.5)", // Adjust the last value (0.5) for transparency
-            backdropFilter: 'blur(5px)' // Optional: adds a blur effect to the background
-            }}>
+        <TableContainer
+          component={Paper}
+          sx={{
+            marginBottom: 5,
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            backdropFilter: "blur(5px)",
+          }}
+        >
           <Table>
             <TableHead>
               <TableRow>
@@ -142,11 +211,13 @@ const NewsFeedScreen = () => {
                   <TableCell>{newsFeed.itemId}</TableCell>
                   <TableCell>{newsFeed.discount}</TableCell>
                   <TableCell>{newsFeed.description}</TableCell>
-                  <TableCell><img 
-                  src={`/images/${newsFeed.image}`} 
-                  alt={newsFeed.image} 
-                  className="w-auto h-6 mx-auto object-cover" 
-                /></TableCell>
+                  <TableCell>
+                    <img
+                      src={`/images/${newsFeed.image}`}
+                      alt={newsFeed.image}
+                      className="w-auto h-6 mx-auto object-cover"
+                    />
+                  </TableCell>
                   <TableCell
                     className="no-print"
                     sx={{
@@ -206,11 +277,13 @@ const NewsFeedScreen = () => {
                 <TableCell>{newsFeed.itemId}</TableCell>
                 <TableCell>{newsFeed.discount}</TableCell>
                 <TableCell>{newsFeed.description}</TableCell>
-                <TableCell><img 
-                  src={`/images/${newsFeed.image}`} 
-                  alt={newsFeed.image} 
-                  className="w-auto h-6 mx-auto object-cover" 
-                /></TableCell>
+                <TableCell>
+                  <img
+                    src={`/images/${newsFeed.image}`}
+                    alt={newsFeed.image}
+                    className="w-auto h-6 mx-auto object-cover"
+                  />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -230,65 +303,61 @@ const NewsFeedScreen = () => {
             p: 4,
           }}
         >
-          <h2>{isUpdate ? "Update News Feed" : "Add News Feed"}</h2>
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
-            <TextField
-              label="Item ID"
-              name="itemId"
-              value={currentNewsFeed.itemId}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            {/* <TextField
-            label="Photo URL"
-            name="photo"
-            value={currentNewsFeed.photo}
-            onChange={handleChange}
+          <Typography variant="h6" gutterBottom>
+            {isUpdate ? "Update News Feed" : "Add News Feed"}
+          </Typography>
+          {showErrorBox && (
+            <div style={{ color: "red", marginBottom: "10px" }}>{errorMessage}</div>
+          )}
+          <TextField
+            label="Item ID"
+            name="itemId"
+            variant="outlined"
             fullWidth
+            value={currentNewsFeed.itemId}
+            onChange={handleChange}
+            error={!!errorMessages.itemId}
+            helperText={errorMessages.itemId}
             margin="normal"
-          /> */}
-            <TextField
-              label="Discount"
-              name="discount"
-              value={currentNewsFeed.discount}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Description"
-              name="description"
-              value={currentNewsFeed.description}
-              onChange={handleChange}
-              multiline
-              rows={5}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Image"
-              name="image"
-              value={currentNewsFeed.image}
-              onChange={handleChange}
-              multiline
-              rows={5}
-              fullWidth
-              margin="normal"
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 2,
-            }}
-          >
-            <Button variant="contained" color="primary" onClick={handleSave}>
-              Save
-            </Button>
-            <Button variant="contained" color="inherit" onClick={handleClose}>
+          />
+          <TextField
+            label="Discount"
+            name="discount"
+            variant="outlined"
+            fullWidth
+            type="number"
+            value={currentNewsFeed.discount}
+            onChange={handleChange}
+            error={!!errorMessages.discount}
+            helperText={errorMessages.discount}
+            margin="normal"
+          />
+          <TextField
+            label="Description"
+            name="description"
+            variant="outlined"
+            fullWidth
+            value={currentNewsFeed.description}
+            onChange={handleChange}
+            error={!!errorMessages.description}
+            helperText={errorMessages.description}
+            margin="normal"
+          />
+          <TextField
+            label="Image"
+            name="image"
+            variant="outlined"
+            fullWidth
+            value={currentNewsFeed.image}
+            onChange={handleChange}
+            margin="normal"
+          />
+          <Box sx={{ display: "flex", justifyContent: "flex-end", marginTop: 3 }}>
+            <Button variant="outlined" onClick={handleClose}>
               Cancel
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleSave} sx={{ marginLeft: 2 }}>
+              {isUpdate ? "Update" : "Add"}
             </Button>
           </Box>
         </Box>
