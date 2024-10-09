@@ -86,7 +86,7 @@ const AdminDashboardScreen = () => {
       path: "/admindashboard/customers",
     },
     {
-      title: "Deliveries",
+      title: "Drivers",
       count: deliveries.length,
       icon: <DeliveriesIcon />,
       path: "/admindashboard/delivery",
